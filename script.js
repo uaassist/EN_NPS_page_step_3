@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Elements for Loading and Resizing ---
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const pageContainer = document.querySelector('.page-container');
+    if (!pageContainer || !loadingIndicator) {
+        console.error("Core elements (page-container or loading-indicator) not found!");
+        return;
+    }
+    
     // --- Elements for our Animation ---
     const fakeMouseCursor = document.getElementById('fakeMouseCursor');
     const xlsReportModalOverlay = document.getElementById('xlsReportModalOverlay');
@@ -228,5 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (xlsReportModalCloseBtn) { xlsReportModalCloseBtn.addEventListener('click', closeXlsReportModal); }
     if (xlsReportModalOverlay) { xlsReportModalOverlay.addEventListener('click', (e) => { if (e.target === xlsReportModalOverlay) closeXlsReportModal(); }); }
 });
+
 
 
