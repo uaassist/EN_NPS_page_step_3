@@ -202,6 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function runLoopingAnimation() {
+             // --- THIS IS THE NEW PART ---
+        // Show the main container and hide the loader
+        pageContainer.classList.remove('hidden');
+        loadingIndicator.style.display = 'none';
+        
         animationIsRunning = true;
         document.getElementById('reportsPageContent').style.display = 'flex';
 
@@ -226,3 +231,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (xlsReportModalCloseBtn) { xlsReportModalCloseBtn.addEventListener('click', closeXlsReportModal); }
     if (xlsReportModalOverlay) { xlsReportModalOverlay.addEventListener('click', (e) => { if (e.target === xlsReportModalOverlay) closeXlsReportModal(); }); }
 });
+
