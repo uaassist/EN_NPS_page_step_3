@@ -82,7 +82,40 @@ body.dark-mode {
     background-color: transparent;
     color: var(--dark-text-color-medium);
 }
+/* --- NEW STYLES FOR LOADING INDICATOR --- */
+#loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+}
 
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #5a95d3; /* Use a theme color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+#loading-indicator p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Class to hide the main container initially */
+.page-container.hidden {
+    display: none;
+}
+/* --- END OF NEW STYLES --- */
 .page-container {
     width: calc(1200px * var(--scale-factor));
     height: calc(800px * var(--scale-factor));
@@ -329,3 +362,4 @@ body.dark-mode #xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thum
 body.dark-mode #xlsReportModal .scrollable-table-wrapper {
     scrollbar-color: var(--dark-text-color-light) var(--dark-bg-color-medium);
 }
+
