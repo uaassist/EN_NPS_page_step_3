@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Animation - Canadian Dental Market</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+<body>
+    <div class="page-container">
+        <header class="page-header">
+            <div class="header-logo">LiketoMe</div>
+            <div class="header-center">DentalCare Group</div>
+            <div class="header-right">
+                <span class="lang active">EN</span>
+                <span class="lang inactive">FR</span>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <main class="content-area">
+                <div id="reportsPageContent" style="display: flex; flex-direction: column; width: 100%; height: 100%;">
+                    <div class="content-header">
+                        <h1 class="content-title">Reports</h1>
+                        <button class="button primary-outline-button reports-add-new-top">
+                            Add New Report <i class="fas fa-plus-circle"></i>
+                        </button>
+                    </div>
+                    <div class="search-bar-container reports-search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search reports...">
+                    </div>
+                    <div class="reports-table-container">
+                        <div class="reports-table-header">
+                            <div class="reports-col-name">Name</div>
+                            <div class="reports-col-survey">Location / Survey</div>
+                            <div class="reports-col-period">Period</div>
+                            <div class="reports-col-actions">Download</div>
+                        </div>
+                        <div class="reports-table-body">
+                            <div class="reports-table-row">
+                                <div class="reports-col-name">Q1 Patient Feedback</div>
+                                <div class="reports-col-survey"><a href="#">Toronto, Yonge St</a></div>
+                                <div class="reports-col-period">01/01/2025 - 03/31/2025</div>
+                                <div class="reports-col-actions">
+                                    <span class="xls-badge" data-tour-id="reports-xls-1">XLS</span>
+                                    <button class="icon-button-table"><i class="fas fa-pencil-alt"></i></button>
+                                </div>
+                            </div>
+                            <div class="reports-table-row">
+                                <div class="reports-col-name">Monthly NPS Summary</div>
+                                <div class="reports-col-survey"><a href="#">Vancouver, Robson St</a></div>
+                                <div class="reports-col-period">04/01/2025 - 04/30/2025</div>
+                                <div class="reports-col-actions">
+                                    <span class="xls-badge">XLS</span>
+                                    <button class="icon-button-table"><i class="fas fa-pencil-alt"></i></button>
+                                </div>
+                            </div>
+                            <div class="reports-table-row">
+                                <div class="reports-col-name">Hygienist Performance</div>
+                                <div class="reports-col-survey"><a href="#">Montreal, Rue Ste-Catherine</a></div>
+                                <div class="reports-col-period">01/01/2025 - 03/31/2025</div>
+                                <div class="reports-col-actions">
+                                    <span class="xls-badge">XLS</span>
+                                    <button class="icon-button-table"><i class="fas fa-pencil-alt"></i></button>
+                                </div>
+                            </div>
+                            <div class="reports-table-row">
+                                <div class="reports-col-name">Front Desk CSAT</div>
+                                <div class="reports-col-survey"><a href="#">Calgary, 17th Ave</a></div>
+                                <div class="reports-col-period">04/01/2025 - 04/30/2025</div>
+                                <div class="reports-col-actions">
+                                    <span class="xls-badge">XLS</span>
+                                    <button class="icon-button-table"><i class="fas fa-pencil-alt"></i></button>
+                                </div>
+                            </div>
+                            <div class="reports-table-row">
+                                <div class="reports-col-name">2024 Annual Review</div>
+                                <div class="reports-col-survey"><a href="#">Halifax, Spring Garden Rd</a></div>
+                                <div class="reports-col-period">01/01/2024 - 12/31/2024</div>
+                                <div class="reports-col-actions">
+                                    <span class="xls-badge">XLS</span>
+                                    <button class="icon-button-table"><i class="fas fa-pencil-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button primary-button reports-add-new-bottom">
+                        Add New Report <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="xlsReportModalOverlay" class="nps-graph-modal-overlay">
+        <div id="xlsReportModal" class="nps-graph-modal">
+             <div class="xls-modal-header">
+                <h2 class="xls-modal-title">Detailed XLS Report (Example)</h2>
+                <button class="xls-modal-close-btn" id="xlsReportModalCloseBtn" aria-label="Close">&times;</button>
+            </div>
+            <div class="xls-modal-body">
+                <div class="report-container">
+                    <div class="header-info">
+                        <h1>Q1 Patient Feedback</h1>
+                        <p class="header-details">
+                            <strong>Location:</strong> Toronto, Yonge St &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <strong>Question:</strong> How likely are you to recommend our clinic to a friend? &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <strong>Period:</strong> 2025-01-01 - 2025-03-31
+                        </p>
+                    </div>
+                    <div class="main-content">
+                        <div class="metric-box gauge-container-box">
+                            <div class="csat-value">NPS: <strong>65.00</strong></div>
+                            <div class="nps-label"> CSAT: <strong>8.8 / 10</strong></div>
+                            <div class="nps-gauge-wrapper">
+                                <div class="nps-gauge-canvas-container">
+                                    <canvas id="xlsNpsGaugeBackgroundChart"></canvas>
+                                </div>
+                                <div id="xlsNpsGaugeNeedle" class="nps-gauge-needle"></div>
+                                <div id="xlsNpsGaugeValue" class="nps-gauge-value-overlay"></div>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Responses by Percentage</h3>
+                            <div class="percentage-results"></div> 
+                            <div class="chart-canvas-container">
+                                 <canvas id="xlsPercentagePieChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                             <h3>Responses by Count</h3>
+                            <div class="count-results"></div> 
+                             <div class="total-reviews">Total reviews: 80</div>
+                            <div class="chart-canvas-container">
+                                 <canvas id="xlsCountBarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <h2>Weekly Feedback Breakdown</h2>
+                        <div class="scrollable-table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr> <th rowspan="2">Week</th> <th colspan="2">Metrics</th> <th rowspan="2">Responses</th> <th colspan="3">Feedback Type</th> </tr>
+                                    <tr> <th>CSAT</th> <th>NPS</th> <th>Promoters</th> <th>Passives</th> <th>Detractors</th> </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Jan 01-07</td><td>8.5</td><td>50.00</td><td>10</td><td>7</td><td>2</td><td>1</td></tr>
+                                    <tr><td>Jan 08-14</td><td>9.1</td><td>71.43</td><td>7</td><td>6</td><td>0</td><td>1</td></tr>
+                                    <tr><td>Jan 15-21</td><td>8.9</td><td>66.67</td><td>9</td><td>7</td><td>1</td><td>1</td></tr>
+                                    <tr><td>Jan 22-28</td><td>9.3</td><td>80.00</td><td>5</td><td>4</td><td>1</td><td>0</td></tr>
+                                    <tr><td>Feb 01-07</td><td>8.2</td><td>40.00</td><td>10</td><td>6</td><td>2</td><td>2</td></tr>
+                                    <tr><td>Feb 08-14</td><td>9.0</td><td>75.00</td><td>8</td><td>7</td><td>0</td><td>1</td></tr>
+                                    <tr><td>Feb 15-21</td><td>8.8</td><td>62.50</td><td>8</td><td>6</td><td>1</td><td>1</td></tr>
+                                    <tr><td>Feb 22-28</td><td>9.4</td><td>83.33</td><td>6</td><td>5</td><td>1</td><td>0</td></tr>
+                                    <tr><td>Mar 01-07</td><td>8.6</td><td>57.14</td><td>7</td><td>5</td><td>1</td><td>1</td></tr>
+                                    <tr><td>Mar 08-14</td><td>9.2</td><td>85.71</td><td>7</td><td>6</td><td>1</td><td>0</td></tr>
+                                    <tr><td>Mar 15-21</td><td>8.7</td><td>60.00</td><td>5</td><td>3</td><td>2</td><td>0</td></tr>
+                                    <tr><td>Mar 22-28</td><td>9.5</td><td>100.00</td><td>2</td><td>2</td><td>0</td><td>0</td></tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr> <td>Total</td> <td>8.8</td> <td>65.00</td> <td>80</td> <td>62</td> <td>10</td> <td>8</td> </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fake-mouse-cursor" id="fakeMouseCursor"></div>
+
+    <script defer src="script.js"></script>
+</body>
+</html>
