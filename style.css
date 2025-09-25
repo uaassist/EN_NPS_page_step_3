@@ -4,7 +4,7 @@
       JavaScript will update this value in real-time.
       We set a default of 1 for when JS hasn't run yet.
     */
-    --scale-factor: 1;
+    --scale-factor: 0.5;
 
     /* Colors and other variables */
     --primary-color: #74ADE6;
@@ -243,3 +243,4 @@ body.dark-mode .content-area { background-color: var(--dark-bg-color); }
 body.dark-mode .content-area { background-color: var(--dark-bg-color); }
 body.dark-mode #reportsPageContent .content-title { color: var(--primary-color); }
 /* ... (rest of dark mode styles are the same) ... */
+
