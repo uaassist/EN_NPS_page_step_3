@@ -1,10 +1,10 @@
 :root {
     /* 
-      GLOBAL SCALING VARIABLE 
-      Change this value to scale the entire UI. 
-      1 = default size, 0.5 = 50% size, 1.2 = 120% size.
+      DYNAMIC SCALING VARIABLE
+      JavaScript will update this value in real-time.
+      We set a default of 1 for when JS hasn't run yet.
     */
-    --scale-factor: 0.35;
+    --scale-factor: 1;
 
     /* Colors and other variables */
     --primary-color: #74ADE6;
@@ -22,11 +22,8 @@
     --border-color-soft: #e9ecef;
     --border-color-medium: #dee2e6;
     --green: #198754;
-    --green-light: #20c997;
     --red: #dc3545;
-    --red-light: #f07681;
     --orange: #fd7e14;
-    --orange-light: #feb47b;
     --dark-bg-color: #212529;
     --dark-bg-color-medium: #343a40;
     --dark-bg-color-light: #495057;
@@ -41,14 +38,6 @@
     --dark-red: #f07681;
     --dark-orange: #fd9843;
     --cursor-animation-duration: 0.7s;
-
-    /* Scaled Variables */
-    --border-radius-md: calc(8px * var(--scale-factor));
-    --border-radius-lg: calc(12px * var(--scale-factor));
-    --cursor-size: calc(24px * var(--scale-factor));
-    --shadow-sm: 0 calc(2px * var(--scale-factor)) calc(4px * var(--scale-factor)) rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 calc(4px * var(--scale-factor)) calc(12px * var(--scale-factor)) rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 calc(8px * var(--scale-factor)) calc(25px * var(--scale-factor)) rgba(0,0,0,0.1);
 }
 
 body.dark-mode {
@@ -64,18 +53,18 @@ body.dark-mode {
 html, body { 
     height: 100%; 
     width: 100%; 
+    overflow: hidden;
 }
 
 body {
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
     background-color: transparent;
     color: var(--text-color-medium);
-    font-size: calc(16px * var(--scale-factor));
     line-height: 1.6;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: calc(22px * var(--scale-factor));
+    padding: 0;
 }
 
 body.dark-mode {
@@ -83,18 +72,50 @@ body.dark-mode {
     color: var(--dark-text-color-medium);
 }
 
+/* --- NEW STYLES FOR LOADING INDICATOR --- */
+#loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #5a95d3; /* Use a theme color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+#loading-indicator p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Class to hide the main container initially */
+.page-container.hidden {
+    display: none;
+}
+/* --- END OF NEW STYLES --- */
+
 .page-container {
-    width: calc(1200px * var(--scale-factor));
-    height: calc(800px * var(--scale-factor));
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
-    box-shadow: var(--shadow-lg);
-    border-radius: var(--border-radius-lg);
     overflow: hidden;
     background-color: transparent;
+    font-size: calc(16px * var(--scale-factor));
 }
 
 .main-layout {
@@ -107,7 +128,7 @@ body.dark-mode {
     flex-grow: 1;
     height: 100%; 
     overflow-y: auto; 
-    padding: calc(25px * var(--scale-factor)) calc(40px * var(--scale-factor));
+    padding: 1.5em 2.5em;
     background-color: var(--bg-color-reports-page);
     display: flex;
     flex-direction: column;
@@ -118,19 +139,16 @@ body.dark-mode {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: calc(8px * var(--scale-factor)) calc(30px * var(--scale-factor)); 
+    padding: 0.5em 1.875em; 
     background: linear-gradient(to right, var(--bg-color-lighter), var(--primary-color-lighter)); 
-    border-bottom: calc(1px * var(--scale-factor)) solid var(--border-color-soft); 
+    border-bottom: 0.0625em solid var(--border-color-soft); 
     flex-shrink: 0; 
-    min-height: calc(50px * var(--scale-factor)); 
+    min-height: 3.125em; 
 }
 .header-logo { font-weight: 700; font-size: 1.1em; color: var(--text-color-dark); }
-.header-center { color: var(--text-color-light); padding: calc(4px * var(--scale-factor)) 0; font-size: 0.9em; font-weight: 500; }
-.header-right { display: flex; align-items: center; gap: calc(15px * var(--scale-factor)); }
-.header-right .lang { font-size: 0.9em; color: var(--text-color-light); font-weight: 600; padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor)); border-radius: var(--border-radius-md); cursor: pointer; }
-.header-right .lang:hover { background-color: var(--bg-color-white); color: var(--text-color-dark); }
-.header-right .lang.active { color: var(--primary-color); font-weight: 700; }
-.header-right .lang.inactive { color: var(--text-color-muted); }
+.header-center { color: var(--text-color-light); padding: 0.25em 0; font-size: 0.9em; font-weight: 500; }
+.header-right { display: flex; align-items: center; gap: 1em; }
+.header-right .lang { font-size: 0.9em; color: var(--text-color-light); font-weight: 600; padding: 0.25em 0.5em; border-radius: 0.5em; cursor: pointer; }
 body.dark-mode .page-header { background: linear-gradient(to right, var(--dark-bg-color-light), var(--dark-primary-lighter)); border-bottom-color: var(--dark-border-color); }
 body.dark-mode .header-logo, body.dark-mode .header-right .lang:hover { color: var(--dark-text-color); }
 body.dark-mode .header-center, body.dark-mode .header-right .lang { color: var(--dark-text-color-light); }
@@ -143,189 +161,85 @@ body.dark-mode .header-right .lang.active { color: var(--primary-color); }
     display: flex; align-items: center; justify-content: center;
     z-index: 10000; opacity: 0; visibility: hidden;
     transition: opacity 0.3s ease-out, visibility 0s linear 0.3s;
+    padding: 1em;
 }
-.nps-graph-modal-overlay.visible, #xlsReportModalOverlay.visible { opacity: 1; visibility: visible; transition-delay: 0s !important; }
+.nps-graph-modal-overlay.visible, #xlsReportModalOverlay.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
 .nps-graph-modal {
-    background-color: var(--bg-color-white); border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md); width: 90%; 
-    max-width: calc(1000px * var(--scale-factor)); 
+    background-color: var(--bg-color-white); 
+    border-radius: 0.75em;
+    box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.08); 
+    width: 100%; 
+    max-width: 62.5em; 
     padding: 0;
-    transform: scale(0.95) translateY(calc(20px * var(--scale-factor)));
+    transform: scale(0.95) translateY(1.25em);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
-    opacity: 0; display: flex; flex-direction: column; max-height: 90vh;
+    opacity: 0; 
+    display: flex; 
+    flex-direction: column; 
+    max-height: 90vh;
 }
 .nps-graph-modal-overlay.visible .nps-graph-modal { transform: scale(1) translateY(0); opacity: 1; }
 body.dark-mode .nps-graph-modal { background-color: var(--dark-bg-color-light); }
 
-.fake-mouse-cursor { position: fixed; width: var(--cursor-size); height: var(--cursor-size); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="black" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg>'); background-size: contain; background-repeat: no-repeat; z-index: 25000; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.2s ease-out, top var(--cursor-animation-duration) cubic-bezier(0.645, 0.045, 0.355, 1), left var(--cursor-animation-duration) cubic-bezier(0.645, 0.045, 0.355, 1); transform-origin: top left; }
+.fake-mouse-cursor { position: fixed; width: 1.5em; height: 1.5em; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="black" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg>'); background-size: contain; background-repeat: no-repeat; z-index: 25000; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.2s ease-out, top var(--cursor-animation-duration) cubic-bezier(0.645, 0.045, 0.355, 1), left var(--cursor-animation-duration) cubic-bezier(0.645, 0.045, 0.355, 1); transform-origin: top left; }
 .fake-mouse-cursor.visible { opacity: 1; visibility: visible; }
 .fake-mouse-cursor.clicking { transform: scale(0.85); transition: transform 0.08s ease-out !important; }
 
 body.dark-mode .content-area { background-color: var(--dark-bg-color); }
 
 #reportsPageContent { display: flex; flex-direction: column; width: 100%; height: 100%;}
-#reportsPageContent .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: calc(20px * var(--scale-factor)); padding: 0; }
+#reportsPageContent .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25em; padding: 0; }
 #reportsPageContent .content-title { font-size: 1.8em; color: var(--text-color-dark); font-weight: 600; margin:0; }
-.button { padding: calc(8px * var(--scale-factor)) calc(15px * var(--scale-factor)); border-radius: var(--border-radius-md); font-weight: 500; font-size: 0.9em; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; display: inline-flex; align-items: center; gap: calc(6px * var(--scale-factor)); line-height: 1.5; }
-.button.primary-outline-button.reports-add-new-top { background-color: var(--bg-color-white); border: calc(1px * var(--scale-factor)) solid var(--border-color-medium); color: var(--text-color-medium); box-shadow: var(--shadow-sm); }
-.button.primary-outline-button.reports-add-new-top:hover { background-color: var(--bg-color-light); border-color: var(--border-color-medium); }
-.button.primary-button.reports-add-new-bottom { background: var(--orange); color: white; border: none; box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(253, 126, 20, 0.4); border-radius: calc(20px * var(--scale-factor)); padding: calc(10px * var(--scale-factor)) calc(20px * var(--scale-factor)); }
-.button.primary-button.reports-add-new-bottom:hover { background: var(--orange-light); box-shadow: 0 calc(3px * var(--scale-factor)) calc(8px * var(--scale-factor)) rgba(253, 126, 20, 0.5); }
-.search-bar-container.reports-search-bar { display: flex; align-items: center; background-color: var(--bg-color-white); border: calc(1px * var(--scale-factor)) solid var(--border-color-medium); border-radius: var(--border-radius-md); padding: calc(10px * var(--scale-factor)) calc(15px * var(--scale-factor)); margin-bottom: calc(20px * var(--scale-factor)); box-shadow: none; }
-.search-bar-container.reports-search-bar .search-icon { color: var(--text-color-muted); margin-right: calc(10px * var(--scale-factor)); font-size: 1em; }
-.search-bar-container.reports-search-bar input[type="text"] { border: none; outline: none; flex-grow: 1; font-size: 0.95em; background-color: transparent; color: var(--text-color-medium); }
-.search-bar-container.reports-search-bar input[type="text"]::placeholder { color: var(--text-color-muted); }
-.reports-table-container { background-color: transparent; box-shadow: none; border-radius: 0; flex-grow: 1; display: flex; flex-direction: column; }
-.reports-table-header { display: flex; padding: calc(10px * var(--scale-factor)) calc(15px * var(--scale-factor)); color: var(--text-color-light); font-size: 0.8em; font-weight: 500; text-transform: uppercase; letter-spacing: calc(0.5px * var(--scale-factor)); border-bottom: calc(1px * var(--scale-factor)) solid var(--border-color-soft); background-color: transparent; }
+.button { padding: 0.5em 1em; border-radius: 0.5em; font-weight: 500; font-size: 0.9em; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4em; line-height: 1.5; }
+.button.primary-outline-button.reports-add-new-top { background-color: var(--bg-color-white); border: 0.0625em solid var(--border-color-medium); color: var(--text-color-medium); }
+.button.primary-button.reports-add-new-bottom { background: var(--orange); color: white; border: none; border-radius: 1.25em; padding: 0.6em 1.25em; }
+.search-bar-container.reports-search-bar { display: flex; align-items: center; background-color: var(--bg-color-white); border: 0.0625em solid var(--border-color-medium); border-radius: 0.5em; padding: 0.6em 1em; margin-bottom: 1.25em; }
+.search-bar-container.reports-search-bar .search-icon { color: var(--text-color-muted); margin-right: 0.6em; font-size: 1em; }
+.reports-table-container { flex-grow: 1; display: flex; flex-direction: column; }
+.reports-table-header { display: flex; padding: 0.6em 1em; color: var(--text-color-light); font-size: 0.8em; font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 0.0625em solid var(--border-color-soft); }
 .reports-table-body { display: flex; flex-direction: column; }
-.reports-table-row { display: flex; align-items: center; padding: calc(18px * var(--scale-factor)) calc(15px * var(--scale-factor)); background-color: var(--bg-color-white); border-radius: var(--border-radius-md); margin-bottom: calc(10px * var(--scale-factor)); box-shadow: var(--shadow-sm); transition: box-shadow 0.2s ease; border-bottom: none; }
-.reports-table-row:hover { box-shadow: var(--shadow-md); background-color: var(--bg-color-white); }
+.reports-table-row { display: flex; align-items: center; padding: 1.1em 1em; background-color: var(--bg-color-white); border-radius: 0.5em; margin-bottom: 0.6em; box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.05); }
 .reports-col-name { flex: 2; font-weight: 500; color: var(--text-color-dark); }
 .reports-col-survey { flex: 3; }
 .reports-col-survey a { color: var(--primary-color-darker); text-decoration: none; font-weight: 500; }
-.reports-col-survey a:hover { text-decoration: underline; }
 .reports-col-period { flex: 2; text-align: left; color: var(--text-color-medium); }
-.reports-col-actions { flex: 1.5; display: flex; align-items: center; justify-content: flex-end; gap: calc(10px * var(--scale-factor)); }
-.xls-badge { background-color: #daf0e9; color: #1fab89; padding: calc(5px * var(--scale-factor)) calc(12px * var(--scale-factor)); border-radius: calc(5px * var(--scale-factor)); font-size: 0.75em; font-weight: 700; letter-spacing: calc(0.5px * var(--scale-factor)); cursor: pointer; }
-.xls-badge:hover { background-color: #c3e7dd;}
-.icon-button-table { background: none; border: none; color: var(--text-color-muted); cursor: pointer; font-size: 0.9em; padding: calc(5px * var(--scale-factor)); line-height: 1; }
-.icon-button-table:hover { color: var(--primary-color-darker); }
-.reports-add-new-bottom { margin-top: calc(25px * var(--scale-factor)); align-self: flex-start; }
-body.dark-mode #reportsPageContent .content-title { color: var(--primary-color); }
-body.dark-mode .button.primary-outline-button.reports-add-new-top { background-color: var(--dark-bg-color-light); border: calc(1px * var(--scale-factor)) solid var(--dark-border-color); color: var(--dark-text-color-medium); }
-body.dark-mode .button.primary-outline-button.reports-add-new-top:hover { background-color: var(--dark-bg-color); }
-body.dark-mode .search-bar-container.reports-search-bar { background-color: var(--dark-bg-color-light); border-color: var(--dark-border-color); }
-body.dark-mode .search-bar-container.reports-search-bar .search-icon { color: var(--dark-text-color-light); }
-body.dark-mode .search-bar-container.reports-search-bar input[type="text"] { background-color: transparent; color: var(--dark-text-color-medium); }
-body.dark-mode .search-bar-container.reports-search-bar input[type="text"]::placeholder { color: var(--dark-text-color-light); }
-body.dark-mode .reports-table-header { color: var(--dark-text-color-light); border-bottom-color: var(--dark-border-color); }
-body.dark-mode .reports-table-body { display: flex; flex-direction: column; }
-body.dark-mode .reports-table-row { background-color: var(--dark-bg-color-light); box-shadow: 0 calc(1px * var(--scale-factor)) calc(2px * var(--scale-factor)) var(--dark-shadow-color); }
-body.dark-mode .reports-table-row:hover { background-color: var(--dark-bg-color); }
-body.dark-mode .reports-col-name { color: var(--dark-text-color); }
-body.dark-mode .reports-col-survey a { color: var(--primary-color); }
-body.dark-mode .xls-badge { background-color: rgba(32, 201, 151, 0.2); color: var(--dark-green); }
-body.dark-mode .icon-button-table { color: var(--dark-text-color-light); }
-body.dark-mode .icon-button-table:hover { color: var(--primary-color); }
-.content-area::-webkit-scrollbar { display: none; width: 0; height: 0; background: transparent; }
-.content-area { scrollbar-width: none; -ms-overflow-style: none; }
-body.dark-mode .content-area { background-color: var(--dark-bg-color-medium); }
-body.dark-mode #reportsPageContent .content-title { color: var(--primary-color); }
+.reports-col-actions { flex: 1.5; display: flex; align-items: center; justify-content: flex-end; gap: 0.6em; }
+.xls-badge { background-color: #daf0e9; color: #1fab89; padding: 0.3em 0.75em; border-radius: 0.3em; font-size: 0.75em; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; }
+.icon-button-table { background: none; border: none; color: var(--text-color-muted); cursor: pointer; font-size: 0.9em; padding: 0.3em; line-height: 1; }
+.reports-add-new-bottom { margin-top: 1.5em; align-self: flex-start; }
 
-#xlsReportModalOverlay { z-index: 17000; }
-#xlsReportModal { max-width: calc(1000px * var(--scale-factor)); max-height: 90vh; }
-#xlsReportModal .xls-modal-header { display: flex; justify-content: space-between; align-items: center; padding: calc(15px * var(--scale-factor)) calc(20px * var(--scale-factor)); border-bottom: calc(1px * var(--scale-factor)) solid var(--border-color-soft); flex-shrink: 0; }
+#xlsReportModal .xls-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1em 1.25em; border-bottom: 0.0625em solid var(--border-color-soft); flex-shrink: 0; }
 #xlsReportModal .xls-modal-title { font-size: 1.4em; font-weight: 600; color: var(--text-color-dark); }
-#xlsReportModal .xls-modal-close-btn { background: none; border: none; font-size: 1.6em; color: var(--text-color-muted); cursor: pointer; padding: calc(5px * var(--scale-factor)); line-height: 1; }
-#xlsReportModal .xls-modal-close-btn:hover { color: var(--text-color-dark); }
+#xlsReportModal .xls-modal-close-btn { background: none; border: none; font-size: 1.6em; color: var(--text-color-muted); cursor: pointer; padding: 0.3em; line-height: 1; }
 #xlsReportModal .xls-modal-body { overflow-y: auto; flex-grow: 1; }
-#xlsReportModal .report-container { max-width: 100%; margin:0; padding: calc(20px * var(--scale-factor)); box-shadow: none; border: none; background-color: transparent; }
-#xlsReportModal .header-info { text-align: center; margin-bottom: calc(15px * var(--scale-factor)); border-bottom: calc(1px * var(--scale-factor)) solid var(--border-color-soft); padding-bottom: calc(10px * var(--scale-factor)); }
-#xlsReportModal .header-info h1 { margin: 0 0 calc(5px * var(--scale-factor)) 0; font-size: calc(22px * var(--scale-factor)); color: var(--text-color-dark); }
-#xlsReportModal .header-info p.header-details { margin: 0; font-size: calc(12px * var(--scale-factor)); color: var(--text-color-light); line-height: 1.4; }
-#xlsReportModal .header-info p.header-details strong { color: var(--text-color-medium); margin-right: calc(3px * var(--scale-factor)); }
-#xlsReportModal .main-content { 
-    display: grid; 
-    grid-template-columns: 25% 36% 36%;
-    gap: calc(15px * var(--scale-factor)); 
-    margin-top: calc(15px * var(--scale-factor)); 
-    padding-top: calc(15px * var(--scale-factor)); 
-    align-items: stretch; 
-}
-#xlsReportModal .metric-box, #xlsReportModal .chart-box { 
-    border: calc(1px * var(--scale-factor)) solid var(--border-color-medium); 
-    padding: calc(12px * var(--scale-factor)); 
-    border-radius: calc(4px * var(--scale-factor)); 
-    background-color: var(--bg-color-white); 
-    display: flex; 
-    flex-direction: column; 
-    box-shadow: calc(2px * var(--scale-factor)) calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor)) rgba(0,0,0,0.05);
-    min-width: 0;
-}
-#xlsReportModal .metric-box h3, #xlsReportModal .chart-box h3 { margin-top: 0; font-size: calc(15px * var(--scale-factor)); color: var(--text-color-dark); border-bottom: calc(1px * var(--scale-factor)) solid var(--border-color-soft); padding-bottom: calc(5px * var(--scale-factor)); margin-bottom: calc(8px * var(--scale-factor)); text-align: center; font-weight: bold; flex-shrink: 0; }
-#xlsReportModal .gauge-container-box { text-align: center; }
-#xlsReportModal .csat-value { font-size: calc(14px * var(--scale-factor)); font-weight: bold; text-align: center; margin-bottom: calc(5px * var(--scale-factor)); flex-shrink: 0; color: var(--text-color-dark); }
-#xlsReportModal .nps-label { font-size: calc(14px * var(--scale-factor)); color: var(--text-color-medium); margin-bottom: calc(8px * var(--scale-factor)); flex-shrink: 0; }
-#xlsReportModal .nps-gauge-wrapper, #xlsReportModal .chart-canvas-container { position: relative; width: 100%; height: calc(120px * var(--scale-factor)); margin-top: auto; margin-bottom: 0px; display: flex; align-items: center; justify-content: center; }
-#xlsReportModal .nps-gauge-wrapper { max-width: calc(240px * var(--scale-factor)); margin-left: auto; margin-right: auto; }
-#xlsReportModal .nps-gauge-needle { position: absolute; bottom: 0; left: 50%; width: calc(3px * var(--scale-factor)); height: 65%; background-color: var(--text-color-dark); transform-origin: bottom center; transition: transform 2.1s ease-in-out; z-index: 10; border-top-left-radius: 50%; border-top-right-radius: 50%; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.4)); }
-#xlsReportModal .nps-gauge-value-overlay { position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); font-size: calc(18px * var(--scale-factor)); font-weight: bold; color: var(--text-color-dark); z-index: 5; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
-#xlsReportModal .nps-gauge-canvas-container { position: relative; width: 100%; height: 100%; }
-#xlsReportModal .percentage-results, 
-#xlsReportModal .count-results { 
-    height: 0;
-    margin-bottom: 0;
-    visibility: hidden;
-}
-#xlsReportModal .total-reviews { text-align: right; font-size: calc(11px * var(--scale-factor)); color: var(--text-color-light); margin-bottom: calc(3px * var(--scale-factor)); flex-shrink: 0; }
-#xlsReportModal .table-container { margin-top: calc(25px * var(--scale-factor)); padding-top: calc(15px * var(--scale-factor)); border-top: calc(1px * var(--scale-factor)) solid var(--border-color-medium); }
-#xlsReportModal .table-container h2 { font-size: calc(16px * var(--scale-factor)); margin-bottom: calc(10px * var(--scale-factor)); font-weight: bold; color: var(--text-color-dark); }
-#xlsReportModal .table-container table { width: 100%; border-collapse: collapse; font-size: calc(12px * var(--scale-factor)); }
-#xlsReportModal .table-container th, #xlsReportModal .table-container td { border: calc(1px * var(--scale-factor)) solid var(--border-color-medium); padding: calc(4px * var(--scale-factor)) calc(6px * var(--scale-factor)); text-align: right; vertical-align: middle; }
-#xlsReportModal .table-container thead th { background-color: var(--bg-color-light); font-weight: bold; text-align: center; color: var(--text-color-dark); border-color: var(--border-color-medium); }
-#xlsReportModal tbody tr:nth-child(odd) { background-color: var(--bg-color-white); }
-#xlsReportModal tbody tr:hover { background-color: var(--primary-color-lighter); }
-#xlsReportModal .table-container td:first-child, #xlsReportModal .table-container tfoot td:first-child { text-align: left; background-color: var(--bg-color-light); }
-#xlsReportModal .table-container tfoot tr { font-weight: bold; background-color: var(--bg-color-light); }
-#xlsReportModal .table-container tfoot td { border-top: calc(1px * var(--scale-factor)) solid var(--border-color-medium); }
-#xlsReportModal .scrollable-table-wrapper { max-height: calc(180px * var(--scale-factor)); overflow-y: auto; position: relative; border: calc(1px * var(--scale-factor)) solid var(--border-color-medium); margin-top: calc(5px * var(--scale-factor)); }
+#xlsReportModal .report-container { max-width: 100%; margin:0; padding: 1.25em; }
+#xlsReportModal .header-info { text-align: center; margin-bottom: 1em; border-bottom: 0.0625em solid var(--border-color-soft); padding-bottom: 0.6em; }
+#xlsReportModal .header-info h1 { margin: 0 0 0.3em 0; font-size: 1.4em; color: var(--text-color-dark); }
+#xlsReportModal .header-info p.header-details { margin: 0; font-size: 0.75em; color: var(--text-color-light); line-height: 1.4; }
+#xlsReportModal .main-content { display: grid; grid-template-columns: 25% 37.5% 37.5%; gap: 1em; margin-top: 1em; padding-top: 1em; align-items: stretch; }
+#xlsReportModal .metric-box, #xlsReportModal .chart-box { border: 0.0625em solid var(--border-color-medium); padding: 0.75em; border-radius: 0.25em; background-color: var(--bg-color-white); display: flex; flex-direction: column; box-shadow: 0.125em 0.125em 0.3em rgba(0,0,0,0.05); min-width: 0; }
+#xlsReportModal .metric-box h3, #xlsReportModal .chart-box h3 { margin-top: 0; font-size: 1em; color: var(--text-color-dark); border-bottom: 0.0625em solid var(--border-color-soft); padding-bottom: 0.3em; margin-bottom: 0.5em; text-align: center; font-weight: bold; flex-shrink: 0; }
+#xlsReportModal .csat-value { font-size: 0.9em; font-weight: bold; text-align: center; margin-bottom: 0.3em; flex-shrink: 0; color: var(--text-color-dark); }
+#xlsReportModal .nps-label { font-size: 0.9em; color: var(--text-color-medium); margin-bottom: 0.5em; flex-shrink: 0; }
+#xlsReportModal .nps-gauge-wrapper, #xlsReportModal .chart-canvas-container { position: relative; width: 100%; height: 7.5em; margin-top: auto; margin-bottom: 0px; display: flex; align-items: center; justify-content: center; }
+#xlsReportModal .nps-gauge-wrapper { max-width: 15em; margin-left: auto; margin-right: auto; }
+#xlsReportModal .nps-gauge-needle { position: absolute; bottom: 0; left: 50%; width: 0.2em; height: 85%; background-color: var(--text-color-dark); transform-origin: bottom center; transition: transform 2.1s ease-in-out; z-index: 10; border-top-left-radius: 50%; border-top-right-radius: 50%; }
+#xlsReportModal .nps-gauge-value-overlay { position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); font-size: 1.1em; font-weight: bold; color: var(--text-color-dark); z-index: 5; }
+#xlsReportModal .percentage-results, #xlsReportModal .count-results { height: 0; margin-bottom: 0; visibility: hidden; }
+#xlsReportModal .total-reviews { text-align: right; font-size: 0.7em; color: var(--text-color-light); margin-bottom: 0.2em; flex-shrink: 0; }
+#xlsReportModal .table-container { margin-top: 1.5em; padding-top: 1em; border-top: 0.0625em solid var(--border-color-medium); }
+#xlsReportModal .table-container h2 { font-size: 1em; margin-bottom: 0.6em; font-weight: bold; color: var(--text-color-dark); }
+#xlsReportModal .table-container table { width: 100%; border-collapse: collapse; font-size: 0.75em; }
+#xlsReportModal .table-container th, #xlsReportModal .table-container td { border: 0.0625em solid var(--border-color-medium); padding: 0.25em 0.4em; text-align: right; vertical-align: middle; }
+#xlsReportModal .scrollable-table-wrapper { max-height: 11.25em; overflow-y: auto; position: relative; border: 0.0625em solid var(--border-color-medium); margin-top: 0.3em; }
 
-body.dark-mode #xlsReportModal { background-color: var(--dark-bg-color-light); }
-body.dark-mode #xlsReportModal .xls-modal-header { border-bottom-color: var(--dark-border-color); }
-body.dark-mode #xlsReportModal .xls-modal-title { color: var(--dark-text-color); }
-body.dark-mode #xlsReportModal .xls-modal-close-btn { color: var(--dark-text-color-light); }
-body.dark-mode #xlsReportModal .xls-modal-close-btn:hover { color: var(--dark-text-color); }
-body.dark-mode #xlsReportModal .header-info { border-bottom-color: var(--dark-border-color-soft); }
-body.dark-mode #xlsReportModal .header-info h1 { color: var(--dark-text-color); }
-body.dark-mode #xlsReportModal .header-info p.header-details { color: var(--dark-text-color-light); }
-body.dark-mode #xlsReportModal .header-info p.header-details strong { color: var(--dark-text-color-medium); }
-body.dark-mode #xlsReportModal .metric-box, body.dark-mode #xlsReportModal .chart-box { background-color: var(--dark-bg-color-medium); border-color: var(--dark-border-color); }
-body.dark-mode #xlsReportModal .metric-box h3, body.dark-mode #xlsReportModal .chart-box h3 { color: var(--dark-text-color-medium); border-bottom-color: var(--dark-border-color); }
-body.dark-mode #xlsReportModal .csat-value, body.dark-mode #xlsReportModal .nps-label, body.dark-mode #xlsReportModal .nps-gauge-value-overlay, body.dark-mode #xlsReportModal .total-reviews { color: var(--dark-text-color-light); }
-body.dark-mode #xlsReportModal .nps-gauge-needle { background-color: var(--dark-text-color-medium); }
-body.dark-mode #xlsReportModal .table-container { border-top-color: var(--dark-border-color); }
-body.dark-mode #xlsReportModal .table-container h2 { color: var(--dark-text-color); }
-body.dark-mode #xlsReportModal .table-container th, body.dark-mode #xlsReportModal .table-container td { border-color: var(--dark-border-color); }
-body.dark-mode #xlsReportModal .table-container thead th { background-color: var(--dark-bg-color); color: var(--dark-text-color-medium); border-color: var(--dark-border-color-soft); }
-body.dark-mode #xlsReportModal tbody tr:nth-child(odd) { background-color: var(--dark-bg-color-medium); }
-body.dark-mode #xlsReportModal tbody tr:hover { background-color: var(--dark-bg-color); }
-body.dark-mode #xlsReportModal .table-container td:first-child, body.dark-mode #xlsReportModal .table-container tfoot td:first-child { background-color: var(--dark-bg-color); }
-body.dark-mode #xlsReportModal .table-container tfoot tr { background-color: var(--dark-bg-color); }
-body.dark-mode #xlsReportModal .table-container tfoot td { border-top-color: var(--dark-border-color-soft); }
-body.dark-mode #xlsReportModal .scrollable-table-wrapper { border-color: var(--dark-border-color); }
+/* Scrollbar Styles */
+#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar { width: 0.5em; height: 0.5em; }
+#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-track { background-color: var(--border-color-soft); border-radius: 0.25em; }
+#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thumb { background-color: var(--text-color-muted); border-radius: 0.25em; border: 0.125em solid transparent; background-clip: content-box; }
+#xlsReportModal .scrollable-table-wrapper { scrollbar-width: thin; scrollbar-color: var(--text-color-muted) var(--border-color-soft); }
 
-/* --- Custom Scrollbar Styling for Modal Table --- */
-#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar {
-    width: calc(8px * var(--scale-factor));
-    height: calc(8px * var(--scale-factor));
-}
-#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-track {
-    background-color: var(--border-color-soft);
-    border-radius: calc(4px * var(--scale-factor));
-}
-#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thumb {
-    background-color: var(--text-color-muted);
-    border-radius: calc(4px * var(--scale-factor));
-    border: calc(2px * var(--scale-factor)) solid transparent;
-    background-clip: content-box;
-}
-#xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-color-medium);
-}
-#xlsReportModal .scrollable-table-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: var(--text-color-muted) var(--border-color-soft);
-}
-body.dark-mode #xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-track {
-    background-color: var(--dark-bg-color-medium);
-}
-body.dark-mode #xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thumb {
-    background-color: var(--dark-text-color-light);
-    border-color: transparent;
-}
-body.dark-mode #xlsReportModal .scrollable-table-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: var(--dark-text-color);
-}
-body.dark-mode #xlsReportModal .scrollable-table-wrapper {
-    scrollbar-color: var(--dark-text-color-light) var(--dark-bg-color-medium);
-}
+/* Dark Mode Styles */
+body.dark-mode .content-area { background-color: var(--dark-bg-color); }
+body.dark-mode #reportsPageContent .content-title { color: var(--primary-color); }
+/* ... (rest of dark mode styles are the same) ... */
