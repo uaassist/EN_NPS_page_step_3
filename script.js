@@ -202,23 +202,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function runLoopingAnimation() {
-             // --- THIS IS THE NEW PART ---
+            // --- THIS IS THE NEW PART ---
         // Show the main container and hide the loader
         pageContainer.classList.remove('hidden');
         loadingIndicator.style.display = 'none';
-        
+
         animationIsRunning = true;
         document.getElementById('reportsPageContent').style.display = 'flex';
 
         while (true) {
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
             const xlsBadge = document.querySelector('[data-tour-id="reports-xls-1"]');
-            if (xlsBadge) {
-                await animateCursorToAndClick(xlsBadge, openXlsReportModal);
-            }
+            if (xlsBadge) await animateCursorToAndClick(xlsBadge, openXlsReportModal);
             await new Promise(resolve => setTimeout(resolve, 3500));
-
             if (xlsReportModalCloseBtn && xlsReportModalOverlay?.classList.contains('visible')) {
                 await animateCursorToAndClick(xlsReportModalCloseBtn, closeXlsReportModal);
             }
@@ -226,9 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    setTimeout(runLoopingAnimation, 1500);
+    // Start the animation after a short delay to ensure everything is ready
+    setTimeout(runLoopingAnimation, 1000); // Delay can be adjusted
     
     if (xlsReportModalCloseBtn) { xlsReportModalCloseBtn.addEventListener('click', closeXlsReportModal); }
     if (xlsReportModalOverlay) { xlsReportModalOverlay.addEventListener('click', (e) => { if (e.target === xlsReportModalOverlay) closeXlsReportModal(); }); }
 });
+
 
